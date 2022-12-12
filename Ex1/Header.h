@@ -209,3 +209,50 @@ std::vector<std::vector<int>> ReadMatrixFormFile(const std::string& path = "grap
 std::vector<List<int>> MainTreeWigth(std::vector<List<int>>& link);
 
 std::vector<List<int>> MainTreeHeight(std::vector<List<int>>& link);
+
+template <class T>
+struct NodeT
+{
+	T value;
+	NodeT<T>* right;
+	NodeT<T>* left;
+	int count;
+
+	NodeT(T value, NodeT<T>* left = nullptr, NodeT<T>* right = nullptr, int count = 0) :
+		value(value), left(left), right(right), count(count) {};
+};
+
+template <class T>
+class Tree
+{
+	NodeT<T>* root;
+	int size;
+
+public:
+	Tree(std::initializer_list<T> list)
+		: root(nullptr), size(0)
+	{
+		for (T el : list)
+			Add(el, root);
+	}
+
+
+	void Add(T& value, NodeT<T>*& ptr)
+	{
+		
+		if (ptr == nullptr)
+		{
+			ptr = new NodeT<T>(value, nullptr, nullptr, 1);
+			size++;
+		}
+		else 
+		{
+			if (ptr->value > value)
+				Add(value, ptr->left);
+			else if (ptr->value < value)
+				Add(value, ptr->right);
+			else
+				ptr->count++;
+		}
+	}
+};

@@ -17,6 +17,7 @@ int main()
 {
     //CreateMatrix();
 
+    /*
     auto matrix = ReadMatrixFormFile();
 
     std::cout << "Graph\n";
@@ -30,6 +31,10 @@ int main()
     std::cout << "Main tree in this Graph (width)\n";
     auto mainTreeLinkHeight = MainTreeHeight(link);
     std::cout << mainTreeLinkHeight;
+    */
+
+    Tree<int> tree = { 1, 2, 3, 4 } ;
+
 }
 
 // Запуск программы: CTRL+F5 или меню "Отладка" > "Запуск без отладки"
