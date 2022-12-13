@@ -33,8 +33,37 @@ int main()
     std::cout << mainTreeLinkHeight;
     */
 
-    Tree<int> tree = { 1, 2, 3, 4 } ;
+    
+    const std::string path1 = "file1.txt";
+    /*
+    std::ofstream fout(path1);
 
+    std::cout << "Input count numbers\n";
+    int count = 0;
+    std::cin >> count;
+
+    std::cout << "Input numbers\n";
+    for (int i = 0; i < count; i++)
+    {
+        int x;
+        std::cin >> x;
+        fout << x << " ";
+    }
+    fout.close();
+    */
+
+   
+    Tree<int> tree;
+    std::ifstream fin(path1);
+    int el;
+    while (fin >> el)
+        tree.Add(el);
+    
+    fin.close();
+
+    CountElement(tree.GetRoot());
+    std::cout << tree.CountOf(4) << '\n';
+    std::cout << tree.CountOf(0) << '\n';
 }
 
 // Запуск программы: CTRL+F5 или меню "Отладка" > "Запуск без отладки"

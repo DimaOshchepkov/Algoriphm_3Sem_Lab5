@@ -225,34 +225,101 @@ struct NodeT
 template <class T>
 class Tree
 {
+private:
+
 	NodeT<T>* root;
 	int size;
 
-public:
-	Tree(std::initializer_list<T> list)
-		: root(nullptr), size(0)
+	void _AddRec(T& value, NodeT<T>*& ptr)
 	{
-		for (T el : list)
-			Add(el, root);
-	}
-
-
-	void Add(T& value, NodeT<T>*& ptr)
-	{
-		
 		if (ptr == nullptr)
 		{
 			ptr = new NodeT<T>(value, nullptr, nullptr, 1);
 			size++;
 		}
-		else 
+		else
 		{
 			if (ptr->value > value)
-				Add(value, ptr->left);
+				_AddRec(value, ptr->left);
 			else if (ptr->value < value)
-				Add(value, ptr->right);
+				_AddRec(value, ptr->right);
 			else
 				ptr->count++;
 		}
 	}
+
+	int _CountOf(T& el, NodeT<T>* ptr)
+	{
+		if (ptr == nullptr)
+			return -1;
+		else if (ptr->value)
+			return ptr->count;
+		else if (el < ptr->value)
+			return _CountOf(el, ptr->left);
+		else if (el > ptr->value)
+			return _CountOf(el, ptr->right);
+
+		return -1;
+	}
+
+public:
+	Tree(std::initializer_list<T> list = {})
+		: root(nullptr), size(0)
+	{
+		for (T el : list)
+			Add(el);
+	}
+
+
+	void Add(T& value)
+	{
+		_AddRec(value, root);
+	}
+
+	NodeT<T>* GetRoot()
+	{
+		return root;
+	}
+
+	int CountOf(T el)
+	{
+		return _CountOf(el, root);
+	}
+	
 };
+
+template <class T>
+void PrintGraph(NodeT<T>* root, int shift = 0)
+{
+	if (root != nullptr)
+	{
+		PrintGraph(root->left, shift + 4);
+		std::cout.width(shift);
+		std::cout << root->value << std::endl;
+		PrintGraph(root->right, shift + 4);
+	}
+};
+
+template <class T>
+void CountElement(NodeT<T>* root)
+{
+	if (root != nullptr)
+	{
+		std::cout << root->value << ": " << root->count << '\n';
+		CountElement(root->left);
+		CountElement(root->right);
+	}
+};
+/*
+template <class T>
+bool Eqval(NodeT<T> t1, NodeT<T> t2)
+{
+	if (t1 != nullptr && t2 != nullptr)
+	{
+		if (t1->value == t2->value)
+		{
+			Eqval(t1->left, t2->left)
+		}
+	}
+}
+*/
