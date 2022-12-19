@@ -218,8 +218,13 @@ struct NodeT
 	NodeT<T>* left;
 	int count;
 
-	NodeT(T value, NodeT<T>* left = nullptr, NodeT<T>* right = nullptr, int count = 0) :
-		value(value), left(left), right(right), count(count) {};
+	int heightLeft;
+	int heightRight;
+
+	NodeT(T value, NodeT<T>* left = nullptr, NodeT<T>* right = nullptr, int count = 1,
+			int heightLeft = 0, int heightRight = 0) :
+		value(value), left(left), right(right), count(count),
+		heightLeft(heightLeft), heightRight(heightRight) {};
 };
 
 template <class T>
@@ -240,9 +245,15 @@ private:
 		else
 		{
 			if (ptr->value > value)
+			{
+				ptr->heightLeft++;
 				_AddRec(value, ptr->left);
+			}
 			else if (ptr->value < value)
+			{
+				ptr->heightRight++;
 				_AddRec(value, ptr->right);
+			}
 			else
 				ptr->count++;
 		}
@@ -260,6 +271,28 @@ private:
 			return _CountOf(el, ptr->right);
 
 		return -1;
+	}
+
+	bool _Eqval(NodeT<T>* r1, NodeT<T>* r2)
+	{
+		if (r1 != nullptr && r2 != nullptr)
+		{
+			if (r1->value == r2->value && r1->count == r2->count)
+				return _Eqval(r1->left, r2->left) && _Eqval(r1->right, r2->right);
+			else
+				return false;
+		}
+		else if (r1 == nullptr && r2 != nullptr)
+			return false;
+		else if (r1 != nullptr && r2 == nullptr)
+			return false;
+
+		return true;
+	}
+
+	void _DelValue(const T& value, NodeT<T>*& prt)
+	{
+		
 	}
 
 public:
@@ -285,6 +318,16 @@ public:
 	{
 		return _CountOf(el, root);
 	}
+
+	bool Eqval(NodeT<T>* root)
+	{
+		return _Eqval(root, this->root);
+	}
+
+	int Height()
+	{
+		return std::max(root->heightLeft, root->heightRight) + 1;
+	}
 	
 };
 
@@ -301,6 +344,24 @@ void PrintGraph(NodeT<T>* root, int shift = 0)
 };
 
 template <class T>
+void _PrintGraphReverse(NodeT<T>* root, int shift, int height)
+{
+	if (root != nullptr)
+	{
+		_PrintGraphReverse(root->left, shift + 4, height);
+		std::cout.width(height*4 - shift);
+		std::cout << root->value << std::endl;
+		_PrintGraphReverse(root->right, shift + 4, height);
+	}
+};
+
+template <class T>
+void PrintGraphReverse(Tree<T> tree)
+{
+	_PrintGraphReverse(tree.GetRoot(), 0, tree.Height());
+};
+
+template <class T>
 void CountElement(NodeT<T>* root)
 {
 	if (root != nullptr)
@@ -310,16 +371,29 @@ void CountElement(NodeT<T>* root)
 		CountElement(root->right);
 	}
 };
+
+template <class T>
+int Height(NodeT<T>* ptr)
+{
+	return std::max(ptr->heightLeft, ptr->heightRight) + 1;
+};
 /*
 template <class T>
-bool Eqval(NodeT<T> t1, NodeT<T> t2)
+void _DelFloor(NodeT<T>*& prt, int maxHeight, int n)
 {
-	if (t1 != nullptr && t2 != nullptr)
-	{
-		if (t1->value == t2->value)
-		{
-			Eqval(t1->left, t2->left)
-		}
-	}
-}
+	if (maxHeight - prt->heightLeft < n - 1)
+		_DelFloor(prt->left, maxHeight, n);
+	else if (maxHeight - prt->heightLeft == n - 1)
+
+	if (maxHeight - prt->heightRight < n - 1)
+		_DelFloor(prt->right, maxHeight, n);
+
+	
+};
+
+template <class T>
+void DelFloor(Tree<T> tr, int n)
+{
+	_DelFloor(tr.GetRoot(), tr.Height() - 1, n);
+};
 */

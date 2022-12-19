@@ -2,6 +2,7 @@
 //
 
 #include <iostream>
+#include <string>
 
 #include "Header.h"
 
@@ -52,7 +53,7 @@ int main()
     fout.close();
     */
 
-   
+   /*
     Tree<int> tree;
     std::ifstream fin(path1);
     int el;
@@ -64,6 +65,54 @@ int main()
     CountElement(tree.GetRoot());
     std::cout << tree.CountOf(4) << '\n';
     std::cout << tree.CountOf(0) << '\n';
+    */
+
+    
+    Tree<int> tr3 = { 1, 2, 3, 4, 2, 3, 5 };
+    Tree<int> tr4 = { 1, 2, 3, -1, -2, -3};
+
+    PrintGraphReverse(tr4);
+    PrintGraph(tr4.GetRoot());
+    /*
+    std::cout << tr3.Eqval(tr4.GetRoot());
+    */
+    /*
+    std::cout << tr4.Height();
+    */
+    const std::string pathWords1 = "words1.txt";
+    const std::string pathWords2 = "words2.txt";
+
+    /*
+    std::cout << "Input string 1\n";
+    std::string str1;
+    std::getline(std::cin, str1);
+
+    std::cout << "Input string 2\n";
+    std::string str2;
+    std::getline(std::cin, str2);
+
+    std::ofstream fout1(pathWords1);
+    fout1 << str1;
+    fout1.close();
+
+    std::ofstream fout2(pathWords2);
+    fout2 << str2;
+    fout2.close();
+    */
+
+    Tree<std::string> tr71;
+    Tree<std::string> tr72;
+    std::string sup;
+
+    std::ifstream fin1(pathWords1);
+    while (fin1 >> sup) tr71.Add(sup);
+    fin1.close();
+
+    std::ifstream fin2(pathWords2);
+    while (fin2 >> sup) tr72.Add(sup);
+    fin2.close();
+
+    PrintGraph(tr71.GetRoot());
 }
 
 // Запуск программы: CTRL+F5 или меню "Отладка" > "Запуск без отладки"
